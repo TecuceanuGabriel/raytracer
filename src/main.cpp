@@ -1,10 +1,16 @@
 #include <iostream>
 
-#pragma warning("This is a custom warning message")
+#include "Image.hpp"
 
 int main()
 {
-	std::cout << "Hello, World!" << std::endl;
-	return 0;
+
+    PPMImage image;
+    image.generate_example();
+    std::string file_name = "image.ppm";
+    image.log();
+    image.save(file_name);
+
+    return 0;
 }
 
