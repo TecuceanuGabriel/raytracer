@@ -1,14 +1,10 @@
 #pragma once
 
+#include "Color.hpp"
+
 #include <cstdint>
 #include <string>
 #include <vector>
-
-struct RGBPixel {
-	uint8_t red;
-	uint8_t green;
-	uint8_t blue;
-};
 
 class PPMImage
 {

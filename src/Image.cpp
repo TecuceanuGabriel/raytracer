@@ -53,39 +53,30 @@ void PPMImage::save(std::string file_name)
 
 void PPMImage::generate_example()
 {
-	width_ = 20;
-	height_ = 20;
+	width_ = 10;
+	height_ = 10;
 
 	pixels_.resize(width_ * height_);
 
 	for (uint8_t i = 0; i < height_; ++i) {
 		for (uint8_t j = 0; j < width_; ++j) {
-			auto r = double(j) / (width_ - 1);
-			auto g = double(i) / (height_ - 1);
-			auto b = 0.0;
+			RGBPixel pixel = color_to_rgb_pixel(Color(double(j) / (width_ - 1),
+													  double(i) / (height_ - 1),
+													  0.0));
 
-			uint8_t ir = uint8_t(255.999 * r);
-			uint8_t ig = uint8_t(255.999 * g);
-			uint8_t ib = uint8_t(255.999 * b);
+			max_value_ =
+				std::max({max_value_, pixel.red, pixel.green, pixel.blue});
 
-			max_value_ = std::max({max_value_, ir, ig, ib});
-
-			pixels_[i * height_ + j] = RGBPixel{ir, ig, ib};
+			pixels_[i * height_ + j] = pixel;
 		}
 	}
-}
-
-static void log_pixel(RGBPixel pixel)
-{
-	std::cout << (int)pixel.red << ' ' << (int)pixel.green << ' '
-			  << (int)pixel.blue;
 }
 
 void PPMImage::log()
 {
 	for (uint32_t i = 0; i < height_; ++i) {
 		for (uint32_t j = 0; j < width_; ++j) {
-			log_pixel(pixels_[i * height_ + j]);
+			write_rgb_pixel(std::cout, pixels_[i * height_ + j]);
 			std::cout << ' ';
 		}
 		std::cout << '\n';
