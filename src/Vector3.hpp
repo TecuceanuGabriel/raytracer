@@ -42,3 +42,5 @@ std::ostream &operator<<(std::ostream &, const Vector3 &);
 double dot_product(const Vector3 &, const Vector3 &);
 Vector3 cross_product(const Vector3 &, const Vector3 &);
 Vector3 unit_vector(const Vector3 &);
+
+using Point3 = Vector3;
