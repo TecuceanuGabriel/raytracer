@@ -6,15 +6,15 @@ class Vector3
 {
   public:
 	Vector3();
-	Vector3(double x, double y, double z);
+	Vector3(const double x, const double y, const double z);
 
 	double get_x() const;
 	double get_y() const;
 	double get_z() const;
 
-	void set_x(double x);
-	void set_y(double y);
-	void set_z(double z);
+	void set_x(const double x);
+	void set_y(const double y);
+	void set_z(const double z);
 
 	Vector3 operator-() const;
 	Vector3 &operator+=(const Vector3 &);

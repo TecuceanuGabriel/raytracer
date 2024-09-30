@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <fstream>
-#include <initializer_list>
 #include <iostream>
 
 PPMImage::PPMImage()
@@ -14,6 +13,7 @@ PPMImage::PPMImage(uint32_t width, uint32_t height)
 	: header_("P6"), width_(width), height_(height), max_value_(0),
 	  pixels_(width * height)
 {
+	pixels_.resize(width_ * height_);
 }
 
 void PPMImage::load(std::string file_name)
@@ -43,13 +43,27 @@ void PPMImage::save(std::string file_name)
 
 	file << header_ << '\n';
 	file << width_ << ' ' << height_ << '\n';
-	file << static_cast<int>(max_value_) << '\n';
+	file << max_value_ << '\n';
 
 	file.write(reinterpret_cast<char *>(pixels_.data()),
 			   pixels_.size() * sizeof(RGBPixel));
 
 	file.close();
 }
+
+const RGBPixel &PPMImage::get_pixel(uint32_t x, uint32_t y) const
+{
+	return pixels_[x * height_ + y];
+}
+
+void PPMImage::set_pixel(uint32_t x, uint32_t y, RGBPixel &pixel)
+{
+	pixels_[x * width_ + y] = pixel;
+}
+
+uint16_t PPMImage::get_max_value() const { return max_value_; }
+
+void PPMImage::set_max_value(uint16_t max_value) { max_value_ = max_value; }
 
 void PPMImage::generate_example()
 {
@@ -60,23 +74,29 @@ void PPMImage::generate_example()
 
 	for (uint8_t i = 0; i < height_; ++i) {
 		for (uint8_t j = 0; j < width_; ++j) {
-			RGBPixel pixel = color_to_rgb_pixel(Color(double(j) / (width_ - 1),
-													  double(i) / (height_ - 1),
-													  0.0));
+			RGBPixel pixel =
+				color_to_rgb_pixel(Color(static_cast<double>(j) / (width_ - 1),
+										 static_cast<double>(i) / (height_ - 1),
+										 0.0));
 
-			max_value_ =
-				std::max({max_value_, pixel.red, pixel.green, pixel.blue});
+			max_value_ = std::max({static_cast<uint8_t>(max_value_),
+								   pixel.red,
+								   pixel.green,
+								   pixel.blue});
 
-			pixels_[i * height_ + j] = pixel;
+			pixels_[i * width_ + j] = pixel;
 		}
 	}
 }
 
 void PPMImage::log()
 {
+	std::cout << header_ << '\n';
+	std::cout << width_ << ' ' << height_ << '\n';
+	std::cout << max_value_ << '\n';
 	for (uint32_t i = 0; i < height_; ++i) {
 		for (uint32_t j = 0; j < width_; ++j) {
-			write_rgb_pixel(std::cout, pixels_[i * height_ + j]);
+			write_rgb_pixel(std::cout, pixels_[i * width_ + j]);
 			std::cout << ' ';
 		}
 		std::cout << '\n';

@@ -15,6 +15,12 @@ class PPMImage
 	void load(std::string file_name);
 	void save(std::string file_name);
 
+	const RGBPixel &get_pixel(uint32_t x, uint32_t y) const;
+	void set_pixel(uint32_t x, uint32_t y, RGBPixel &pixel);
+
+	uint16_t get_max_value() const;
+	void set_max_value(uint16_t max_value);
+
 	void generate_example();
 	void log();
 
@@ -23,7 +29,7 @@ class PPMImage
 	std::string header_;
 	uint32_t width_;
 	uint32_t height_;
-	uint8_t max_value_;
+	uint16_t max_value_;
 
 	std::vector<RGBPixel> pixels_;
 };

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Color.hpp"
 #include "Vector3.hpp"
 
 class Ray
@@ -11,7 +12,7 @@ class Ray
 	const Point3 &get_origin() const;
 	const Vector3 &get_direction() const;
 
-    Point3 at(double t) const;
+	Point3 at(double t) const;
 
   private:
 	Point3 origin_;
